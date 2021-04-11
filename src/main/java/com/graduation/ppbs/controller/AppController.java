@@ -39,7 +39,9 @@ public class AppController {
     public List<App> getAppByType(@RequestBody App app) throws Exception {
         Integer type = app.getType();
         if (type == null) {
-            return null;
+            type = -1;
+        } else if (type == 0) {
+            return appService.queryAllApp();
         }
         return appService.queryAppListByType(type);
     }

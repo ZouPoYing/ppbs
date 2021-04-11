@@ -19,7 +19,7 @@ public interface AppMapper {
             @Result(property = "type", column = "type") })
     List<App> queryAllApp();
 
-    @Select("SELECT * FROM APP WHERE TYPE>=#{type}")
+    @Select("SELECT * FROM APP WHERE TYPE=#{type} OR TYPE IS NULL")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "name", column = "name"),

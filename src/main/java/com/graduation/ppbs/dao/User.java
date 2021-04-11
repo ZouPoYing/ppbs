@@ -1,13 +1,20 @@
 package com.graduation.ppbs.dao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class User {
     private Integer userid;
     private String username;
     private String name;
     private String password;
-    private Integer telephone;
+    private String telephone;
     private String email;
     private Integer usertype;
+    private Integer audit;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date date;
 
     @Override
     public String toString() {
@@ -16,9 +23,11 @@ public class User {
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", telephone=" + telephone +
+                ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", usertype=" + usertype +
+                ", audit=" + audit +
+                ", date=" + date +
                 '}';
     }
 
@@ -54,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(Integer telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
@@ -76,5 +85,21 @@ public class User {
 
     public void setUsertype(Integer usertype) {
         this.usertype = usertype;
+    }
+
+    public Integer getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Integer audit) {
+        this.audit = audit;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
