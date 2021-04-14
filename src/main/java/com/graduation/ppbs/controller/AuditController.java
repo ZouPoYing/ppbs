@@ -2,6 +2,7 @@ package com.graduation.ppbs.controller;
 
 import com.graduation.ppbs.dao.Audit;
 import com.graduation.ppbs.dao.File;
+import com.graduation.ppbs.dao.Order;
 import com.graduation.ppbs.dao.User;
 import com.graduation.ppbs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,6 +166,76 @@ public class AuditController {
         orderService.UpdateOrderAudit(Integer.valueOf(auditid),Integer.valueOf(auditerid),Integer.valueOf(orderid));
         auditService.AuditType2(Integer.valueOf(auditid),Integer.valueOf(auditerid),msgtype.equals("0")?"退回":"通过");
         msgService.addMsg(Integer.valueOf(auditid),msg,Integer.valueOf(msgtype));
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping("/AuditType3")
+    public Map<String, Object> AuditType3(@RequestBody Map<String, String> params) throws Exception {
+        String msgtype = params.get("msgtype");
+        String msg = params.get("msg");
+        String auditid = params.get("auditid");
+        String auditerid = params.get("auditerid");
+        String orderid = params.get("orderid");
+        Map<String, Object> result = new HashMap<>();
+        if (msgtype.isEmpty() || msg.isEmpty() || auditid.isEmpty() || auditerid.isEmpty() || orderid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return result;
+        }
+        if (msgtype.equals("1")) {
+            orderService.UpdateOrderAudit242(Integer.valueOf(orderid));
+        }
+        auditService.AuditType2(Integer.valueOf(auditid),Integer.valueOf(auditerid),msgtype.equals("0")?"退回":"通过");
+        msgService.addMsg(Integer.valueOf(auditid),msg,Integer.valueOf(msgtype));
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping("/addAudit3")
+    public Map<String, Object> addAudit3(@RequestBody Map<String, String> params) throws Exception {
+        String supplierid = params.get("supplierid");
+        String reason = params.get("reason");
+        String orderid = params.get("orderid");
+        String userid = params.get("userid");
+        Map<String, Object> result = new HashMap<>();
+        if (supplierid.isEmpty() || reason.isEmpty() || orderid.isEmpty() || userid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return result;
+        }
+        Order order = orderService.getOrderByOrderid(Integer.valueOf(orderid));
+        if (order.getAudittype()==2) {
+            auditService.addAuditType3(Integer.valueOf(userid),Integer.valueOf(orderid),reason);
+            Audit audit = auditService.getCurrentAudit();
+            orderService.UpdateOrderAudittypeAndAuditid(audit.getAuditid(),Integer.valueOf(supplierid),Integer.valueOf(orderid));
+        } else {
+            auditService.updateAuditStateAndReason(reason,order.getAuditid());
+        }
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping("/getAuditType3")
+    public List<Map<String, Object>> getAuditType3() throws Exception {
+        SimpleDateFormat sj = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        List<Map<String, Object>> list = auditService.getAuditType3();
+        for (Map<String, Object> map:list) {
+            map.put("date",sj.format(map.get("date")));
+        }
+        return list;
+    }
+
+    @RequestMapping("/AuditType5")
+    public Map<String, Object> AuditType5(@RequestBody Map<String, String> params) throws Exception {
+        String msg = params.get("msg");
+        String userid = params.get("userid");
+        String orderid = params.get("orderid");
+        Map<String, Object> result = new HashMap<>();
+        if (msg.isEmpty() || orderid.isEmpty() || userid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return result;
+        }
+        orderService.UpdateOrderAudit25(Integer.valueOf(orderid));
+        msgService.addMsg2(Integer.valueOf(userid),msg,Integer.valueOf(orderid));
         result.put("success", true);
         return result;
     }

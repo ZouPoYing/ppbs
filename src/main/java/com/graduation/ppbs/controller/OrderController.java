@@ -125,6 +125,17 @@ public class OrderController {
         return orderService.getOrderByOrderid(Integer.valueOf(orderid));
     }
 
+    @RequestMapping("/getOrderAndFileByOrderid")
+    public Map<String, Object> getOrderAndFileByOrderid(@RequestBody Map<String, String> params) throws Exception {
+        String orderid = params.get("orderid");
+        if (orderid.isEmpty()) {
+            return null;
+        }
+        Map<String, Object> map = orderService.getOrderAndFileByOrderid(Integer.valueOf(orderid));
+        map.put("name", map.get("filename").toString().substring(map.get("filename").toString().replaceFirst("_","-").indexOf("_")+1));
+        return map;
+    }
+
     @RequestMapping("/getApplicant")
     public List<Map<String, Object>> getApplicant(@RequestBody Map<String, String> params) throws Exception {
         String orderid = params.get("orderid");
@@ -136,6 +147,93 @@ public class OrderController {
         for (Map<String, Object> map:list) {
             map.put("date", sj.format(map.get("date")));
             map.put("name", map.get("filename").toString().substring(map.get("filename").toString().replaceFirst("_","-").indexOf("_")+1));
+        }
+        return list;
+    }
+
+    @RequestMapping("/isMyOrder")
+    public Map<String, Object> isMyOrder(@RequestBody Map<String, String> params) throws Exception {
+        String userid = params.get("userid");
+        String orderid = params.get("orderid");
+        Map<String, Object> result = new HashMap<>();
+        if (userid.isEmpty() || orderid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return result;
+        }
+        if (orderService.isMyOrder(Integer.valueOf(orderid),Integer.valueOf(userid)) == 0) {
+            result.put("msg", "您无权查看供应商信息");
+            return result;
+        }
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping("/getBidder")
+    public List<Map<String, Object>> getBidder(@RequestBody Map<String, String> params) throws Exception {
+        String orderid = params.get("orderid");
+        if (orderid.isEmpty()) {
+            return null;
+        }
+        List<Map<String, Object>> list = orderService.getBidder(Integer.valueOf(orderid));
+        SimpleDateFormat sj = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        for (Map<String, Object> map:list) {
+            if (map.get("telephone")==null) {
+                map.put("telephone", "无");
+            }
+            if (map.get("email")==null) {
+                map.put("email", "无");
+            }
+            map.put("date", sj.format(map.get("date")));
+            map.put("name", map.get("filename").toString().substring(map.get("filename").toString().replaceFirst("_","-").indexOf("_")+1));
+        }
+        return list;
+    }
+
+    @RequestMapping("/getMyTimeOutOrder")
+    public List<Map<String, Object>> getMyTimeOutOrder(@RequestBody Map<String, String> params) throws Exception {
+        String userid = params.get("userid");
+        if (userid.isEmpty()) {
+            return null;
+        }
+        List<Map<String, Object>> list = orderService.getMyTimeOutOrder(Integer.valueOf(userid));
+        SimpleDateFormat sj = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        for (Map<String, Object> map:list) {
+            if (map.get("filename")==null) {
+                map.put("filename", "无");
+                map.put("name", "无");
+            } else {
+                map.put("name", map.get("filename").toString().substring(map.get("filename").toString().replaceFirst("_","-").indexOf("_")+1));
+            }
+            map.put("date", sj.format(map.get("date")));
+        }
+        return list;
+    }
+
+    @RequestMapping("/endOrder")
+    public Map<String, Object> endOrder(@RequestBody Map<String, String> params) throws Exception {
+        String orerid = params.get("orerid");
+        String supplierid = params.get("supplierid");
+        Map<String, Object> result = new HashMap<>();
+        if (orerid.isEmpty() || supplierid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return null;
+        }
+        orderService.UpdateOrderAudit24(Integer.valueOf(supplierid),Integer.valueOf(orerid));
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping("/getEvaluate")
+    public List<Map<String, Object>> getEvaluate(@RequestBody Map<String, String> params) throws Exception {
+        String committerid = params.get("committerid");
+        if (committerid.isEmpty()) {
+            return null;
+        }
+        SimpleDateFormat sj = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        List<Map<String, Object>> list = orderService.getEvaluate(Integer.valueOf(committerid));
+        for (Map<String, Object> map:list) {
+            map.put("date", sj.format(map.get("date")));
+            map.put("enddate", sj.format(map.get("enddate")));
         }
         return list;
     }

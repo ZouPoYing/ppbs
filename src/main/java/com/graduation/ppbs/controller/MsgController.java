@@ -53,4 +53,18 @@ public class MsgController {
         }
         return list;
     }
+
+    @RequestMapping("/UpdateMsgUse")
+    public Map<String, Object> UpdateMsgUse(@RequestBody Map<String, String> params) throws Exception {
+        String msgid = params.get("msgid");
+        Map<String, Object> result = new HashMap<>();
+        if (msgid.isEmpty()) {
+            result.put("msg", "参数不能为空");
+            return null;
+        }
+        msgService.UpdateMsgUse(Integer.valueOf(msgid));
+        result.put("success", true);
+        return result;
+    }
+
 }

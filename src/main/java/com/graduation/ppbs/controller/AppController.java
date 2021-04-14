@@ -40,8 +40,6 @@ public class AppController {
         Integer type = app.getType();
         if (type == null) {
             type = -1;
-        } else if (type == 0) {
-            return appService.queryAllApp();
         }
         return appService.queryAppListByType(type);
     }

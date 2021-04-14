@@ -16,6 +16,7 @@ public class Audit {
     private String address;
     private Integer orderid;
     private String state;
+    private String reason;
 
     @Override
     public String toString() {
@@ -30,6 +31,7 @@ public class Audit {
                 ", address='" + address + '\'' +
                 ", orderid=" + orderid +
                 ", state='" + state + '\'' +
+                ", reason='" + reason + '\'' +
                 '}';
     }
 
@@ -111,5 +113,13 @@ public class Audit {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

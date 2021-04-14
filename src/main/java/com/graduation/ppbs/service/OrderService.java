@@ -44,6 +44,10 @@ public class OrderService {
         return orderMapper.getOrderByOrderid(orderid);
     }
 
+    public Map<String, Object> getOrderAndFileByOrderid(Integer orderid) throws Exception {
+        return orderMapper.getOrderAndFileByOrderid(orderid);
+    }
+
     public void UpdateOrder(String ordername,String technology,BigDecimal minmoney,Date enddate, Integer orderid) throws Exception {
         orderMapper.UpdateOrder(ordername,technology,minmoney,enddate,orderid);
     }
@@ -58,5 +62,37 @@ public class OrderService {
 
     public void UpdateOrderMaxmoney(BigDecimal money,Integer orderid) throws Exception {
         orderMapper.UpdateOrderMaxmoney(money,orderid);
+    }
+
+    public int isMyOrder(Integer orderid, Integer userid) throws Exception {
+        return orderMapper.isMyOrder(orderid,userid);
+    }
+
+    public List<Map<String, Object>> getBidder(Integer orderid) throws Exception {
+        return orderMapper.getBidder(orderid);
+    }
+
+    public List<Map<String, Object>> getMyTimeOutOrder(Integer userid) throws Exception {
+        return orderMapper.getMyTimeOutOrder(userid);
+    }
+
+    public void UpdateOrderAudittypeAndAuditid(Integer auditid,Integer accepterid,Integer orderid) throws Exception {
+        orderMapper.UpdateOrderAudittypeAndAuditid(auditid,accepterid,orderid);
+    }
+
+    public void UpdateOrderAudit24(Integer accepterid,Integer orderid) throws Exception {
+        orderMapper.UpdateOrderAudit24(accepterid,orderid);
+    }
+
+    public void UpdateOrderAudit242(Integer orderid) throws Exception {
+        orderMapper.UpdateOrderAudit242(orderid);
+    }
+
+    public List<Map<String, Object>> getEvaluate(Integer committerid) throws Exception {
+        return orderMapper.getEvaluate(committerid);
+    }
+
+    public void UpdateOrderAudit25(Integer orderid) throws Exception {
+        orderMapper.UpdateOrderAudit25(orderid);
     }
 }

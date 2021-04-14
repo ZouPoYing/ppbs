@@ -26,4 +26,8 @@ public class OfferService {
     public List<Map<String, Object>> queryOfferByOrderid(Integer orderid) throws Exception {
         return offerMapper.queryOfferByOrderid(orderid);
     }
+
+    public List<Map<String, Object>> queryOneOfferByOrderid(Integer orderid) throws Exception {
+        return offerMapper.queryOneOfferByOrderid(orderid);
+    }
 }

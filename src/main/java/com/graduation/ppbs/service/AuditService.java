@@ -62,4 +62,20 @@ public class AuditService {
     public Audit getAuditByAuditid(Integer auditid) throws Exception {
         return auditMapper.getAuditByAuditid(auditid);
     }
+
+    public void addAuditType3(Integer committerid, Integer orderid, String reason) throws Exception {
+        auditMapper.addAuditType3(committerid,orderid,reason);
+    }
+
+    public Audit getCurrentAudit() throws Exception {
+        return auditMapper.queryAllAudit().get(0);
+    }
+
+    public List<Map<String, Object>> getAuditType3() throws Exception {
+        return auditMapper.getAuditType3();
+    }
+
+    public void updateAuditStateAndReason(String reason,Integer auditid) throws Exception {
+        auditMapper.updateAuditStateAndReason(reason,auditid);
+    }
 }

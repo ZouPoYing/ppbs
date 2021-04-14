@@ -68,4 +68,19 @@ public class OfferController {
         }
         return list;
     }
+
+    @RequestMapping("/queryOneOfferByOrderid")
+    public List<Map<String, Object>> queryOneOfferByOrderid(@RequestBody Map<String, String> params) throws Exception {
+        String orderid = params.get("orderid");
+        if (orderid.isEmpty()) {
+            return null;
+        }
+        List<Map<String, Object>> list = offerService.queryOneOfferByOrderid(Integer.valueOf(orderid));
+        SimpleDateFormat sj = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        for (Map<String, Object> map:list) {
+            map.put("date",sj.format(map.get("date")));
+        }
+        return list;
+    }
+
 }

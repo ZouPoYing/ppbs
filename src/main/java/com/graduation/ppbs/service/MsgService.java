@@ -29,4 +29,12 @@ public class MsgService {
     public List<Map<String, Object>> queryMsg2(Integer userid) throws Exception {
         return msgMapper.queryMsg2(userid);
     }
+
+    public void UpdateMsgUse(Integer msgid) throws Exception {
+        msgMapper.UpdateMsgUse(msgid);
+    }
+
+    public void addMsg2(Integer auditid, String msg, Integer orderid) throws Exception {
+        msgMapper.addMsg2(auditid,msg,orderid);
+    }
 }
